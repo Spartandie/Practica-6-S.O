@@ -13,11 +13,10 @@ public class Pnode implements Runnable{
     private Thread hilo;
     private int size;
     private int numeroInstrucciones;
-    //private int ejecutadas
-    //private tabla de páginas
-    //private int faltantes
-
+    private int faltantes;
+    private int ejecutadas;
     
+    private PageTable pageTable; 
     /**
      * Contructor de Pnode
      */
@@ -26,32 +25,43 @@ public class Pnode implements Runnable{
         this.prev=null; 
     }
 
-    public void crearProceso(int pid, int[] psize, String nombre, Ram ram){
+    public void crearProceso(int pid, int[] psize, String nombre,ColaProcesos l, Ram ram){
         this.pid=pid;
 
         Random random = new Random();
         int indiceA= random.nextInt(psize.length);
         this.size=psize[indiceA];
 
+        this.pageTable= new PageTable();
+
 
         hilo= new Thread(this,nombre);
-
-        ram.guardarProceso(this);
+        ram.guardarProceso(l, this);
 
 
     }
 
 
-    public boolean correrProceso(){
+    public int correrProceso(ColaProcesos l, Ram ram){
 
-        for (int count=0; count<this.numeroInstrucciones;count++){
-            //for (int  r=1;r<5;r++ ) {
-                System.out.println("Proceso #"+pid+" \""+hilo.getName()+"\" ejecuta su instruccion #"+(count+1));    
-            //}
+        //correr solo 5 intstrucciones
+        //mandar a cola
+        System.out.println(faltantes);
+        for (int count = 0;count<5 && ejecutadas<this.numeroInstrucciones &&faltantes!=0 ;count++,faltantes--,ejecutadas++){
+                System.out.print("Proceso #"+pid+" \""+hilo.getName()+"\"");
+                System.out.println(" ejecuta su instruccion #"+(ejecutadas+1));    
         }
-        System.out.println("Se terminó hilo #"+this.pid+" \""+this.hilo.getName()+"\"");
+        
+        System.out.println(faltantes);
+        if(faltantes==0){
+            
+            l.del_first_node(ram);
 
-        return true;
+            
+        }
+        //System.out.println("Se terminó hilo #"+this.pid+" \""+this.hilo.getName()+"\"");
+
+        return 0;
     }
 
 
@@ -59,6 +69,7 @@ public class Pnode implements Runnable{
     public void run(){
         Random random = new Random();
         this.numeroInstrucciones = random.nextInt(21) + 10; // Genera un número aleatorio entre 10 y 30 (ambos incluidos)
+        this.faltantes=this.numeroInstrucciones;
 
         System.out.println(hilo.getName()+" iniciado.");
 
@@ -69,8 +80,16 @@ public class Pnode implements Runnable{
         return this.hilo;
     }
 
+    public PageTable getTable(){
+        return this.pageTable;
+    }
+
     public int getSize(){
         return this.size;
+    }
+
+    public int getFaltantes(){
+        return this.faltantes;
     }
     
     public int getTotalInstructions(){

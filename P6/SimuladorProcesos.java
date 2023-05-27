@@ -113,9 +113,8 @@ public class SimuladorProcesos{
 
     public static void validarCrear(ColaProcesos l, String nombre){
         Pnode a = new Pnode();
-        a.crearProceso(id_count, psize, nombre, ram);
+        a.crearProceso(id_count, psize, nombre, l, ram);
         id_count++;
-        l.add_fin(a);
         a.getThread().run();
     }
 
@@ -142,8 +141,7 @@ public class SimuladorProcesos{
 
     public static void ejecutarActual(){
     	System.out.println("Ejecutar proceso actual");
-    	l.correrActual();
-
+    	l.correrActual(ram);
     }
 
 
