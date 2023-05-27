@@ -41,32 +41,31 @@ public class Pnode implements Runnable{
     }
 
 
-    public boolean correrProceso(ColaProcesos l, Ram ram){
+    public int correrProceso(ColaProcesos l, Ram ram){
 
         //correr solo 5 intstrucciones
         //mandar a cola
         System.out.println(faltantes);
         for (int count = 0;count<5 && ejecutadas<this.numeroInstrucciones &&faltantes!=0 ;count++,faltantes--,ejecutadas++){
-            //for (int  r=1;r<5 && faltantes!= 0;r++,faltantes--,ejecutadas++) {
-                    System.out.print("Proceso #"+pid+" \""+hilo.getName()+"\"");
-                    System.out.println(" ejecuta su instruccion #"+(ejecutadas+1));    
-            //}
+                System.out.print("Proceso #"+pid+" \""+hilo.getName()+"\"");
+                System.out.println(" ejecuta su instruccion #"+(ejecutadas+1));    
         }
+        
         System.out.println(faltantes);
         if(faltantes==0){
-            l.del_first_node(ram);
+            return l.del_first_node(ram);
+            
         }
         //System.out.println("Se terminó hilo #"+this.pid+" \""+this.hilo.getName()+"\"");
 
-        return true;
+        return 0;
     }
 
 
     @Override
     public void run(){
         Random random = new Random();
-        //this.numeroInstrucciones = random.nextInt(21) + 10; // Genera un número aleatorio entre 10 y 30 (ambos incluidos)
-        this.numeroInstrucciones=30;
+        this.numeroInstrucciones = random.nextInt(21) + 10; // Genera un número aleatorio entre 10 y 30 (ambos incluidos)
         this.faltantes=this.numeroInstrucciones;
 
         System.out.println(hilo.getName()+" iniciado.");

@@ -5,7 +5,7 @@ public class ColaProcesos{
     
     private int size=0;
 
-    private ColaProcesos lista_eliminados = new ColaProcesos();
+    //private ColaProcesos lista_eliminados = new ColaProcesos();
 
     public ColaProcesos() {
         this.head=null;
@@ -20,15 +20,14 @@ public class ColaProcesos{
     }*/
 
 
-    public boolean correrActual(Ram ram){
+    public int correrActual(Ram ram){
         if(is_empty())
         {
-            return false;
+            return 0;
         }
 
-        this.head.correrProceso(this, ram);
-
-        return true;
+        return this.head.correrProceso(this, ram);
+   
     }
 
     /**
@@ -183,24 +182,29 @@ public class ColaProcesos{
      * Elimina el primer nodo
      * @param l es la lista
      */
-    public boolean del_first_node(Ram ram){
+    public int del_first_node(Ram ram){
         //Checa si cola está vacia
+        int psize;
+
         if(is_empty())
         {
-            return false;
+            return 0;
         }
 
         
         //Borra proceso de ram
         ram.borrarProceso(this.head);
+        psize = this.head.getSize();
+
 
         //Borra el proceso de la cola
         if(this.head!=this.tail)
         {
+            
             //Añade a lista deprocesos interrumpidos (eliminados)
-            if(this.head.getFaltantes!=0){
+            //if(this.head.getFaltantes()!=0){
                 //Añadiralistaeliminados;
-            }
+            //}
 
             this.tail.setNext(this.head.getNext());
             this.head.setPrev(null);
@@ -212,13 +216,12 @@ public class ColaProcesos{
             this.head.setPrev(null);
             this.head.setNext(null);
             this.head=null;
-            this.tail=null;
-            
+            this.tail=null;  
         }
 
         size--;
 
-        return true;
+        return psize;
         
     }
 
