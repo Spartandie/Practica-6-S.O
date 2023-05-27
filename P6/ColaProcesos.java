@@ -3,6 +3,7 @@ public class ColaProcesos{
     private Pnode head;
     private Pnode tail;
     
+    private int size=0;
 
     public ColaProcesos() {
         this.head=null;
@@ -17,10 +18,15 @@ public class ColaProcesos{
     }*/
 
 
-    public void correrActual(){
-        
+    public boolean correrActual(){
+        if(is_empty())
+        {
+            return false;
+        }
+
         this.head.correrProceso();
 
+        return true;
     }
 
     /**
@@ -38,6 +44,10 @@ public class ColaProcesos{
         return tail;
     }
     
+    public int getSize(){
+        return this.size;
+    }
+
     /*
     /**
      * 
@@ -78,9 +88,37 @@ public class ColaProcesos{
         n.setNext(this.head);
         n.setPrev(this.tail);
         this.tail=n;
+
+        size++;
         
         return true;
     }
+
+    public boolean print_actual(){
+        if(is_empty())
+        {
+            return false;
+        }
+
+        System.out.println("\n-------------------Proceso Actual----------------------\n");
+
+        /*
+        Nombre
+        id
+        Instrucciones totales
+        Instrucciones ejecutadas
+        Direacciones de memoria asignadas
+        Tabla de páginas
+        */
+
+        System.out.println("Nombre: "+this.head.getThread().getName());
+        System.out.println("Pid: "+this.head.getPid());
+        System.out.println("Instrucciones totales: "+this.head.getTotalInstructions());
+
+        return true;
+
+
+    }   
 
     /**
      * Funcion para imprimir la lista completa
@@ -98,12 +136,12 @@ public class ColaProcesos{
         System.out.println("\n------------------- IMPRIMIENDO COLA DE PROCESOS ----------------------\n");
         
         for(t=this.head; t!=this.tail; t=t.getNext()){
-            System.out.print(t.getPid()+" \""+t.getThread().getName()+"\"");
+            System.out.print("Proceso "+t.getPid()+" \""+t.getThread().getName()+"\"");
             System.out.println(" Size: "+t.getSize());
             System.out.println("");
              
         }
-        System.out.print(t.getPid()+" \""+t.getThread().getName()+"\"");
+        System.out.print("Proceso "+t.getPid()+" \""+t.getThread().getName()+"\"");
         System.out.println(" Size: "+t.getSize());
         System.out.println("");
         System.out.println("\n-------------------------------------------------------------\n");
@@ -119,6 +157,7 @@ public class ColaProcesos{
      */
     public boolean is_empty(){
         if(this.head==null && this.tail==null){
+            System.out.println("Cola vacia");
             return true;
         }
         return false;
@@ -141,7 +180,12 @@ public class ColaProcesos{
      * Elimina el primer nodo
      * @param l es la lista
      */
-    public void del_first_node(Ram ram){
+    public boolean del_first_node(Ram ram){
+
+        if(is_empty())
+        {
+            return false;
+        }
 
         //Borra proceso de ram
         ram.borrarProceso(this.head);
@@ -162,6 +206,10 @@ public class ColaProcesos{
             this.tail=null;
             
         }
+
+        size--;
+
+        return true;
         
     }
 

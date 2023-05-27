@@ -73,6 +73,10 @@ public class Pnode implements Runnable{
         return this.size;
     }
     
+    public int getTotalInstructions(){
+        return this.numeroInstrucciones;
+    }
+    
 
     /**
      * funcion de tipo get que regresa next.

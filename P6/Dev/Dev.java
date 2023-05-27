@@ -1,8 +1,12 @@
+import java.util.Random;
 public class Dev {
-    static int id_count=0;
-    
+    static int id_count=1;
+    static int[] psize = {64, 128, 256, 512};
+    static Ram ram = new Ram();
+
+
     public static void main(String[] args) {
-    
+
         //Crea cola de procesos
         ColaProcesos l = new ColaProcesos();
     
@@ -11,75 +15,37 @@ public class Dev {
         validarCrear(l,"exe");
         validarCrear(l,"uwu");
         validarCrear(l,"owo");
-    
-    
-        //Imprime colad de procesos
-        if(l.print_list()){
-            System.out.println("NO Esta vacia");
-        }
-        else{
-            System.out.println("Esta vacia");
-        }
+        validarCrear(l,"ewe");
+        validarCrear(l,"iwi");
+        validarCrear(l,"AwA");
+        validarCrear(l,"aa");
+        validarCrear(l,"aaa");
+        validarCrear(l,"aaaa");
+        validarCrear(l,"aaaaaa");
 
-        /*
-            Cola se ve así
-            <-word->exe->uwu->owo->
-        */
-        l.correrActual();//corre word
-        l.sendCurrentToTail();//mandamos a word al final
+        ram.imprimirRam();
 
-        /*
-            Cola se ve así
-            <-exe->uwu->owo->word->
-        */
+        l.del_first_node(ram);
 
-        l.correrActual();//corre exe
-        l.correrActual();//corre exe de nuevo
-        l.sendCurrentToTail();//mandamos a exe al final
+        ram.imprimirRam();
 
-        /*
-            Cola se ve así
-            <-uwu->owo->word->exe->
-        */
-
-        l.correrActual();//corre uwu
-        l.sendCurrentToTail();//mandamos uwu al final
-
-        /*
-            Cola se ve así
-            <-owo->word->exe->uwu->
-        */
-
-        l.correrActual();//corre owo
-        l.del_first_node();//se elimina owo
-
-        /*
-            Cola se ve así
-            <-word->exe->uwu->
-        */
-
-        l.correrActual();//corre word
-
-        l.sendCurrentToTail();
         
-        /*
-            Cola se ve así
-            <-exe->uwu->word->
-        */
 
-        l.print_list();//imprime lista
         
+
     
     }
 
     public static void validarCrear(ColaProcesos l, String nombre){
         Pnode a = new Pnode();
-        a.crearProceso(id_count,nombre);
+        a.crearProceso(id_count, psize, nombre, ram);
         id_count++;
         l.add_fin(a);
         a.getThread().run();
     }
 
-
+    public static int asignaEspacio(){
+        return 1;
+    }
 
 }

@@ -1,0 +1,78 @@
+
+        //Imprime colad de procesos
+        if(l.print_list()){
+            System.out.println("NO Esta vacia");
+        }
+        else{
+            System.out.println("Esta vacia");
+        }
+
+        /*
+            Cola se ve así
+            <-word->exe->uwu->owo->
+        */
+        l.correrActual();//corre word
+        l.sendCurrentToTail();//mandamos a word al final
+
+        /*
+            Cola se ve así
+            <-exe->uwu->owo->word->
+        */
+
+        l.correrActual();//corre exe
+        l.correrActual();//corre exe de nuevo
+        l.sendCurrentToTail();//mandamos a exe al final
+
+        /*
+            Cola se ve así
+            <-uwu->owo->word->exe->
+        */
+
+        l.correrActual();//corre uwu
+        l.sendCurrentToTail();//mandamos uwu al final
+
+        /*
+            Cola se ve así
+            <-owo->word->exe->uwu->
+        */
+
+        l.correrActual();//corre owo
+        l.del_first_node();//se elimina owo
+
+        /*
+            Cola se ve así
+            <-word->exe->uwu->
+        */
+
+        l.correrActual();//corre word
+
+        l.sendCurrentToTail();
+        
+        /*
+            Cola se ve así
+            <-exe->uwu->word->
+        */
+
+        l.print_list();//imprime lista
+
+
+
+/*
+    Cola de procesos:
+    -Añade procesos
+    -Elimina primer proceso
+    -Ejecuta actual
+    -Se imprime cola
+    -Manda actual a cola
+
+    Proceso:
+    -Se crea
+    -Se ejecuta (Todas sus instrucciones)
+    
+    RAM:
+    -Se imprime
+    -Valida espacio
+    -Guarda secuencialmente
+    -Elimina proceso
+
+*/

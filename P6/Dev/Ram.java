@@ -75,13 +75,8 @@ public class Ram{
 		System.out.println("-------------RAM-------");
 		System.out.println("N° localidades disponibles: "+espacio_disponible);
 		for (int i = 0;i<ram.length ; i++){
-			if (ram[i]!=0){
-				System.out.print("Localidad "+i+" tiene el proceso: ");
-				System.out.println(ram[i]);
-			}
-			else {
-				System.out.println("Localidad "+i+" vacia");
-			}
+			System.out.print("Localidad "+i+" tiene el proceso: ");
+			System.out.println(ram[i]);
 		}
 	}
 
