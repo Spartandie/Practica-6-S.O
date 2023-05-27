@@ -91,9 +91,7 @@ public class SimuladorProcesos{
 
                     ram.imprimirRam();
 
-                    //for(int i = 0;i<id_count;i++){
-                    	//System.out.println("Elemento #"+id_count+"de id_list: "+id_list[id_count]);
-                    //} 
+                    
                     break;    
 
                 case "11":
@@ -151,6 +149,7 @@ public class SimuladorProcesos{
 
     public static void pasarSiguiente(){
     	System.out.println("Pasar al proceso siguiente");
+        l.sendCurrentToTail();
     }
 
     public static void matarActual(){
