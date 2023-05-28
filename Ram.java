@@ -6,7 +6,8 @@ public class Ram{
 	static String option;
 	static int[] ram = new int[1024];
 	static int espacio_disponible=ram.length;
-	static int psize;
+
+	private Lista linkedList = new Lista();
 
 	/*
 		si se crea y se guarda un proceso 
@@ -42,15 +43,14 @@ public class Ram{
 					//1.-Debe terminar su ejecucion completamente
 					//2.-Tamaño de proceso eliminado debe ser mayor o igual al
 					//proceso que queremos meter
-					psize=l.correrActual(this);
+					l.correrActual(this);
 					break;
 				case "2":
-					//l.del_first_node(this);
-					System.out.println("2");
+					l.del_first_node(this);
+					System.out.println(espacio_disponible);
 					break;
 				case "3":
-					//l.sendCurrentToTail();
-					System.out.println("3");
+					l.sendCurrentToTail();
 					break;
 				default:
 					
@@ -58,7 +58,8 @@ public class Ram{
 					break;
 				}
 
-				if(psize>=proceso.getSize()){
+				if(espacio_disponible>=proceso.getSize()){
+					System.out.println("Entro a if");
 					l.add_fin(proceso);
 					guardardeadebis_ahorasifinal(proceso);
 					break;
@@ -66,7 +67,7 @@ public class Ram{
 
 			}while(!option.equals("1") || !option.equals("2") || !option.equals("3"));
 			
-			System.out.println("se guardo:)"+espacio_disponible+")");
+			System.out.println("Proceso guardado con éxito:)");
 			//l.add_fin(proceso);
 			//guardardeadebis_ahorasifinal(proceso);
 
@@ -88,19 +89,35 @@ public class Ram{
 	}
 
 	public static void guardardeadebis_ahorasifinal(Pnode proceso){
-		//secuencial
 		int count = 0;
-		for (int i = 0;i<ram.length; i++){
+	
+
+		for (int i = 0, p = 0;i<ram.length; i++){
 			if (ram[i]==0){
+
 					if(count<proceso.getSize())
-					{
+					{	
+						if(count%16==0){
+						int marco = (i+1)/16;
+						//System.out.println("Pasamos marco "+marco);
+						
+						
+						proceso.getTable().add_frame(marco);
+
+					}
 						ram[i] = proceso.getPid();
 						count++;
+					}
+					else{
+						break;
 					}
 					
 			}
 
 		}
+
+		proceso.getTable().printTable(proceso);
+
 		espacio_disponible=espacio_disponible-proceso.getSize();
 
 	}
@@ -129,10 +146,62 @@ public class Ram{
 		}
 	}
 
+	public static void imprimirListaLigada(){
+		System.out.println("-------------Linked List RAM -------");
+
+		int contador=1;
+		int inicia=0;
+
+		int i;
+
+		for (i = 0;i<ram.length ; i++){				
+			if (i!=0){
+				//Mismo proceso
+				if(ram[i] == ram[i-1]){
+					contador++;
+				}	
+				else//Cambio de proceso	
+				{
+					if(ram[i-1]!=0)
+					{
+						System.out.println("P:"+inicia+":"+contador);
+					}
+					else{
+						System.out.println("H:"+inicia+":"+contador);
+					}
+					contador=1;
+					inicia=i;
+				}
+				
+		
+			}
+					
+		}
+
+		if(ram[i-1]!=0){
+			System.out.println("P:"+inicia+":"+contador);
+		}
+		else{
+			System.out.println("H:"+inicia+":"+contador);
+		}
+		
+	}
+
 
 
 }
 
-
+/*
+	1
+	1
+	1
+	1
+	0
+	0
+	2
+	2
+	2
+	2
+*/
 
 

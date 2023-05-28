@@ -116,6 +116,24 @@ public class ColaProcesos{
         System.out.println("Nombre: "+this.head.getThread().getName());
         System.out.println("Pid: "+this.head.getPid());
         System.out.println("Instrucciones totales: "+this.head.getTotalInstructions());
+        System.out.println("Instrucciones ejecutadas: "+this.head.getEjecutadas());
+
+        this.head.getTable().imprimirDirecciones();
+
+
+
+        /*
+        System.out.println("-------------RAM (localidades) -------");
+        for (int i = 0;i<ram.length; i++){
+            if (ram[i]!=0){
+                System.out.print("Localidad "+i+" tiene el proceso: ");
+                System.out.println(ram[i]);
+            }
+            else {
+                System.out.println("Localidad "+i+" vacia");
+            }
+        }*/
+
 
         return true;
 
@@ -182,19 +200,19 @@ public class ColaProcesos{
      * Elimina el primer nodo
      * @param l es la lista
      */
-    public int del_first_node(Ram ram){
+    public void del_first_node(Ram ram){
         //Checa si cola está vacia
-        int psize;
+
 
         if(is_empty())
         {
-            return 0;
+            return;
         }
 
         
         //Borra proceso de ram
         ram.borrarProceso(this.head);
-        psize = this.head.getSize();
+    
 
 
         //Borra el proceso de la cola
@@ -221,7 +239,7 @@ public class ColaProcesos{
 
         size--;
 
-        return psize;
+        return;
         
     }
 

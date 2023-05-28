@@ -14,10 +14,9 @@ public class Pnode implements Runnable{
     private int size;
     private int numeroInstrucciones;
     private int faltantes;
-    private int ejecutadas=0;
-    //private tabla de páginas
-
+    private int ejecutadas;
     
+    private PageTable pageTable; 
     /**
      * Contructor de Pnode
      */
@@ -32,6 +31,8 @@ public class Pnode implements Runnable{
         Random random = new Random();
         int indiceA= random.nextInt(psize.length);
         this.size=psize[indiceA];
+
+        this.pageTable= new PageTable();
 
 
         hilo= new Thread(this,nombre);
@@ -50,10 +51,12 @@ public class Pnode implements Runnable{
                 System.out.print("Proceso #"+pid+" \""+hilo.getName()+"\"");
                 System.out.println(" ejecuta su instruccion #"+(ejecutadas+1));    
         }
-        
+        l.sendCurrentToTail();
         System.out.println(faltantes);
         if(faltantes==0){
-            return l.del_first_node(ram);
+            
+            l.del_first_node(ram);
+
             
         }
         //System.out.println("Se terminó hilo #"+this.pid+" \""+this.hilo.getName()+"\"");
@@ -77,6 +80,10 @@ public class Pnode implements Runnable{
         return this.hilo;
     }
 
+    public PageTable getTable(){
+        return this.pageTable;
+    }
+
     public int getSize(){
         return this.size;
     }
@@ -87,6 +94,10 @@ public class Pnode implements Runnable{
     
     public int getTotalInstructions(){
         return this.numeroInstrucciones;
+    }
+
+     public int getEjecutadas(){
+        return this.ejecutadas;
     }
     
 

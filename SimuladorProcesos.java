@@ -126,6 +126,7 @@ public class SimuladorProcesos{
 
     public static void estadoMemoria(){
     	System.out.println("Ver estado de la memoria");
+        ram.imprimirListaLigada();
     }
 
     public static void imprimirCola(){
