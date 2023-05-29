@@ -23,7 +23,6 @@ public class PageTable{
         if(this.head==null){
             this.head=f;
             this.tail=f;
-            System.out.println("cabeza tiene"+this.head.getFrame());
             size++;
             return true;
         }
@@ -38,7 +37,9 @@ public class PageTable{
 
     public void printTable(Pnode proceso){
         if(is_empty()){
+            System.out.println("------------------------");
             System.out.println("Tabla vacia");
+            System.out.println("------------------------");
             return ;
         }
 
@@ -56,24 +57,18 @@ public class PageTable{
             
         }
         System.out.println("["+i+"]"+"\t    F# "+t.getFrame());
+        System.out.println("------------------------");
         
     }
 
 
-    public void imprimirDirecciones(){
-        PageNode t = new PageNode();
-        t=this.head;
-        int i;
-        System.out.print("--------Direcciones asignadas proceso");
-        System.out.println("--------");
-         System.out.println("Localidad(proceso)    Localidad(RAM)");
-
-        for (i=0; t!=this.tail;t=t.getNext(),i++ ){
-
-            System.out.println("["+i+"]"+"\t    Localidad: "+(t.getFrame()+1)*16);
-            
+    public void imprimirDirecciones(int[] ram, int pid){
+        System.out.println("-------------Localidades asignadas proceso "+pid+"----------");
+        for (int i = 0;i<ram.length ; i++){
+            if (ram[i]==pid){
+                System.out.println("Localidad "+i);
+            }
         }
-        System.out.println("["+i+"]"+"\t    Localidad "+(t.getFrame()+1)*16);
     }
    
     public boolean is_empty(){

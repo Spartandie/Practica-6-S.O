@@ -20,13 +20,13 @@ public class ColaProcesos{
     }*/
 
 
-    public int correrActual(Ram ram){
+    public int correrActual(Ram ram, ListaFinalizados lf, ListaEliminados le, int faltantes){
         if(is_empty())
         {
             return 0;
         }
 
-        return this.head.correrProceso(this, ram);
+        return this.head.correrProceso(this, lf, ram, le, faltantes);
    
     }
 
@@ -96,7 +96,7 @@ public class ColaProcesos{
         return true;
     }
 
-    public boolean print_actual(){
+    public boolean print_actual(Ram ram){
         if(is_empty())
         {
             return false;
@@ -118,21 +118,12 @@ public class ColaProcesos{
         System.out.println("Instrucciones totales: "+this.head.getTotalInstructions());
         System.out.println("Instrucciones ejecutadas: "+this.head.getEjecutadas());
 
-        this.head.getTable().imprimirDirecciones();
+        this.head.getTable().imprimirDirecciones(ram.getRam(), this.head.getPid());
+        this.head.getTable().printTable(this.head);
+
+        System.out.println("------------------------");
 
 
-
-        /*
-        System.out.println("-------------RAM (localidades) -------");
-        for (int i = 0;i<ram.length; i++){
-            if (ram[i]!=0){
-                System.out.print("Localidad "+i+" tiene el proceso: ");
-                System.out.println(ram[i]);
-            }
-            else {
-                System.out.println("Localidad "+i+" vacia");
-            }
-        }*/
 
 
         return true;
@@ -177,7 +168,9 @@ public class ColaProcesos{
      */
     public boolean is_empty(){
         if(this.head==null && this.tail==null){
+            System.out.println("------------------------");
             System.out.println("Cola vacia");
+            System.out.println("------------------------");
             return true;
         }
         return false;
@@ -200,7 +193,7 @@ public class ColaProcesos{
      * Elimina el primer nodo
      * @param l es la lista
      */
-    public void del_first_node(Ram ram){
+    public void del_first_node(Ram ram, ListaEliminados le,int faltantes){
         //Checa si cola está vacia
 
 
@@ -212,7 +205,11 @@ public class ColaProcesos{
         
         //Borra proceso de ram
         ram.borrarProceso(this.head);
-    
+        if(faltantes !=0){
+            //AÑade a eliminados
+            le.add_DeletedNode(this.head.getPid());
+        }
+
 
 
         //Borra el proceso de la cola
@@ -243,35 +240,13 @@ public class ColaProcesos{
         
     }
 
-    /*
-    /**
-     * Elimina el ultimo nodo
-     * @param l es la lista
-     */
-    /*
-    public void del_last_node(){
-        if(this.head!=this.tail){
-            this.head.setPrev(this.tail.getPrev());
-            this.tail.getPrev().setNext(this.head);
-            this.tail.setPrev(null);
-            this.tail.setNext(null);
-            this.tail=this.head.getPrev();
-        }
-        else{
-            this.tail.setPrev(null);
-            this.tail.setNext(null);
-            this.head=null;
-            this.tail=null;
-        }
-    }*/
 
 
     public void sendCurrentToTail(){
         if(this.head!=this.tail){
             this.head=this.head.getNext();
             this.tail=this.tail.getNext();
-            //this.head.setNext(this.)
-            //this.tail.setPrev(this.head.getNext())
+
 
         }
     }
