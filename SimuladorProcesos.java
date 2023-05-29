@@ -11,6 +11,8 @@ public class SimuladorProcesos{
     static int[] psize = {64, 128, 256, 512};
     static Ram ram = new Ram();
     static ColaProcesos l = new ColaProcesos();
+    static ListaFinalizados lf = new ListaFinalizados();
+    static ListaEliminados le = new ListaEliminados();
 
 
     //Lista listaLocalidades;
@@ -113,7 +115,7 @@ public class SimuladorProcesos{
 
     public static void validarCrear(ColaProcesos l, String nombre){
         Pnode a = new Pnode();
-        a.crearProceso(id_count, psize, nombre, l, ram);
+        a.crearProceso(id_count, psize, nombre, l, ram, lf, le);
         id_count++;
         a.getThread().run();
     }
@@ -122,6 +124,8 @@ public class SimuladorProcesos{
     	System.out.println("Ver estado de los procesos");
 
         System.out.println("N° de procesos listos: "+l.getSize());
+        lf.printFinishedList();
+        le.printDeletedList();
     }
 
     public static void estadoMemoria(){
@@ -142,7 +146,7 @@ public class SimuladorProcesos{
 
     public static void ejecutarActual(){
     	System.out.println("Ejecutar proceso actual");
-    	l.correrActual(ram);
+    	l.correrActual(ram, lf, le, l.getHead().getFaltantes());
     }
 
 
@@ -153,7 +157,7 @@ public class SimuladorProcesos{
 
     public static void matarActual(){
     	System.out.println("Matar proceso actual");
-        l.del_first_node(ram);
+        l.del_first_node(ram, le, l.getHead().getFaltantes());
     }
 
     public static void desfragmentarMemoria(){

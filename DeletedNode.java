@@ -1,16 +1,22 @@
-public class LinkedNode{
-	private LinkedNode next;
+public class DeletedNode{
+	private DeletedNode next;
     private int size;
     private int inicio;
+    private int pid;
 
-    private String tipo;
-
-    public LinkedNode()
+    public DeletedNode()
     {
         this.next=null;
  
     }
 
+    public void setPid(int pid){
+        this.pid=pid;
+    }
+
+    public int getPid(){
+        return this.pid;
+    }
 
     public void setSize(int size){
     	this.size=size;
@@ -20,35 +26,21 @@ public class LinkedNode{
     	return this.size;
     }
 
-    public void setInicio(int inicio){
-        this.inicio=inicio;
-    }
-
-    public void setTipo(String tipo){
-        this.tipo=tipo;
-    }
-
-    public LinkedNode getNext(){
+    public DeletedNode getNext(){
         return this.next;
     }
 
-    public void setNext(LinkedNode n){
+    public void setNext(DeletedNode n){
         this.next=n;
     }
 
-    public int getInicio(){
-        return this.inicio;
-    }
-
-    public String getTipo(){
-        return this.tipo;
-    }
     
 }
 
 /*
 1:Corregir bug
 2:
+-Lista finalizados
 -Lista eliminados
 3:Ya
 4:Ya

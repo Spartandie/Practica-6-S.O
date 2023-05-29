@@ -20,13 +20,13 @@ public class ColaProcesos{
     }*/
 
 
-    public int correrActual(Ram ram){
+    public int correrActual(Ram ram, ListaFinalizados lf, ListaEliminados le, int faltantes){
         if(is_empty())
         {
             return 0;
         }
 
-        return this.head.correrProceso(this, ram);
+        return this.head.correrProceso(this, lf, ram, le, faltantes);
    
     }
 
@@ -200,7 +200,7 @@ public class ColaProcesos{
      * Elimina el primer nodo
      * @param l es la lista
      */
-    public void del_first_node(Ram ram){
+    public void del_first_node(Ram ram, ListaEliminados le,int faltantes){
         //Checa si cola está vacia
 
 
@@ -212,7 +212,11 @@ public class ColaProcesos{
         
         //Borra proceso de ram
         ram.borrarProceso(this.head);
-    
+        if(faltantes !=0){
+            //AÑade a eliminados
+            le.add_DeletedNode(this.head.getPid());
+        }
+
 
 
         //Borra el proceso de la cola

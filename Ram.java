@@ -7,7 +7,7 @@ public class Ram{
 	static int[] ram = new int[1024];
 	static int espacio_disponible=ram.length;
 
-	private Lista linkedList = new Lista();
+	private ListaLigada linkedList = new ListaLigada();
 
 	/*
 		si se crea y se guarda un proceso 
@@ -17,7 +17,7 @@ public class Ram{
 		entonces espacio_disponible=espacio_disponible+psize;
 	*/
 
-	public void guardarProceso(ColaProcesos l, Pnode proceso){
+	public void guardarProceso(ColaProcesos l,ListaFinalizados lf,ListaEliminados le, Pnode proceso){
 	
 		if (validar(proceso) == true){
 			//hay espacio;
@@ -43,10 +43,11 @@ public class Ram{
 					//1.-Debe terminar su ejecucion completamente
 					//2.-Tamaño de proceso eliminado debe ser mayor o igual al
 					//proceso que queremos meter
-					l.correrActual(this);
+					l.correrActual(this,lf, le, proceso.getFaltantes());
 					break;
 				case "2":
-					l.del_first_node(this);
+					l.del_first_node(this, le, l.getHead().getFaltantes());
+					//le.add_DeletedNode(proceso.getPid());
 					System.out.println(espacio_disponible);
 					break;
 				case "3":
@@ -88,9 +89,8 @@ public class Ram{
 
 	}
 
-	public static void guardardeadebis_ahorasifinal(Pnode proceso){
+	public void guardardeadebis_ahorasifinal(Pnode proceso){
 		int count = 0;
-	
 
 		for (int i = 0, p = 0;i<ram.length; i++){
 			if (ram[i]==0){
@@ -120,15 +120,19 @@ public class Ram{
 
 		espacio_disponible=espacio_disponible-proceso.getSize();
 
+
+		linkedList.refreshLinkedList(this.ram);
+
 	}
 
-	public static void borrarProceso(Pnode proceso){
+	public void borrarProceso(Pnode proceso){
 		for (int i = 0; i<ram.length;i++ ) {
 			if(proceso.getPid()==ram[i]){
 				ram[i]=0;
 			}
 		}
 		espacio_disponible=espacio_disponible+proceso.getSize();
+		linkedList.refreshLinkedList(this.ram);
 		System.out.println("Proceso "+proceso.getPid()+" eliminado con éxito");
 	}
 
@@ -146,46 +150,10 @@ public class Ram{
 		}
 	}
 
-	public static void imprimirListaLigada(){
-		System.out.println("-------------Linked List RAM -------");
-
-		int contador=1;
-		int inicia=0;
-
-		int i;
-
-		for (i = 0;i<ram.length ; i++){				
-			if (i!=0){
-				//Mismo proceso
-				if(ram[i] == ram[i-1]){
-					contador++;
-				}	
-				else//Cambio de proceso	
-				{
-					if(ram[i-1]!=0)
-					{
-						System.out.println("P:"+inicia+":"+contador);
-					}
-					else{
-						System.out.println("H:"+inicia+":"+contador);
-					}
-					contador=1;
-					inicia=i;
-				}
-				
-		
-			}
-					
-		}
-
-		if(ram[i-1]!=0){
-			System.out.println("P:"+inicia+":"+contador);
-		}
-		else{
-			System.out.println("H:"+inicia+":"+contador);
-		}
-		
+	public void imprimirListaLigada(){
+		linkedList.printLinkedList();
 	}
+
 
 
 

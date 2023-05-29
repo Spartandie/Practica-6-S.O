@@ -25,7 +25,7 @@ public class Pnode implements Runnable{
         this.prev=null; 
     }
 
-    public void crearProceso(int pid, int[] psize, String nombre,ColaProcesos l, Ram ram){
+    public void crearProceso(int pid, int[] psize, String nombre,ColaProcesos l, Ram ram,ListaFinalizados lf,ListaEliminados le){
         this.pid=pid;
 
         Random random = new Random();
@@ -36,28 +36,27 @@ public class Pnode implements Runnable{
 
 
         hilo= new Thread(this,nombre);
-        ram.guardarProceso(l, this);
+        ram.guardarProceso(l, lf, le, this);
 
 
     }
 
 
-    public int correrProceso(ColaProcesos l, Ram ram){
+    public int correrProceso(ColaProcesos l, ListaFinalizados lf, Ram ram ,ListaEliminados le, int faltantes){
 
         //correr solo 5 intstrucciones
         //mandar a cola
-        System.out.println(faltantes);
         for (int count = 0;count<5 && ejecutadas<this.numeroInstrucciones &&faltantes!=0 ;count++,faltantes--,ejecutadas++){
                 System.out.print("Proceso #"+pid+" \""+hilo.getName()+"\"");
                 System.out.println(" ejecuta su instruccion #"+(ejecutadas+1));    
         }
-        l.sendCurrentToTail();
-        System.out.println(faltantes);
         if(faltantes==0){
-            
-            l.del_first_node(ram);
-
-            
+            //Añadir a finalizados
+            lf.add_FinishedNode(this.pid);
+            l.del_first_node(ram, le, faltantes);            
+        }
+        else{
+            l.sendCurrentToTail();
         }
         //System.out.println("Se terminó hilo #"+this.pid+" \""+this.hilo.getName()+"\"");
 
